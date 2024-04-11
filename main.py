@@ -25,8 +25,14 @@ MOVE_VEL = 20
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
+def draw_grid(window):
+    pygame.draw.rect(window, OUTLINE_COLOR, (0, 0, WIDTH, HEIGHT), OUTLINE_THICKNESS)
+    
+
 def draw(window):
     window.fill(BACKGROUND_COLOR)
+    draw_grid(window)
+    pygame.display.update() # override whatever on screen
 
 def main(window):
     clock = pygame.time.Clock()
@@ -39,6 +45,8 @@ def main(window):
             if event.type == pygame.QUIT:
                 run = False
                 break
+        
+        draw(window)
     
     pygame.quit()
     
