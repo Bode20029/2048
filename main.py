@@ -84,15 +84,19 @@ def draw_grid(window):
     
     pygame.draw.rect(window, OUTLINE_COLOR, (0, 0, WIDTH, HEIGHT), OUTLINE_THICKNESS)
 
-def draw(window):
+def draw(window, tiles):
     window.fill(BACKGROUND_COLOR)
+    
+    for tile in tiles.values():
+        tile.draw()
+    
     draw_grid(window)
     pygame.display.update() # override whatever on screen
 
 def main(window):
     clock = pygame.time.Clock()
     run = True
-    
+    tiles = {"00": Tile(4, 0, 0), "20": Tile(128, 2, 0)}
     while run:
         clock.tick(FPS)
         
