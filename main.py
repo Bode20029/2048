@@ -19,7 +19,7 @@ BACKGROUND_COLOR = (205,192,180)
 FONT_COLOR = (119,110,101)
 
 
-FONT = pygame.font.SysFont("comicsans",60, bold=True)
+FONT = pygame.font.SysFont("Comic Sans",60, bold=True)
 MOVE_VEL = 20
 
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -54,7 +54,7 @@ class Tile:
         color = self.get_color()
         pygame.draw.rect(WINDOW, color, (self.x, self.y, RECT_WIDTH, RECT_HEIGHT))
         
-        text = FONT.render(str(self.value), 1, FONT)
+        text = FONT.render(str(self.value), 1, FONT_COLOR)
         window.blit(
             
             text, 
@@ -88,15 +88,33 @@ def draw(window, tiles):
     window.fill(BACKGROUND_COLOR)
     
     for tile in tiles.values():
-        tile.draw()
+        tile.draw(window)
     
     draw_grid(window)
     pygame.display.update() # override whatever on screen
+    
+def get_random_pos(tiles):
+    row = None
+    col = None
+    while True:
+        row = random.randrange(0, ROWS) # random from 0 - No. of ROWS
+        col = random.randrange(0, COLS)
+        
+        if f"{row}{col}" not in tiles:
+            break
+        
+    return row, col
+def generate_tiles():
+    tiles = {}
+    for _ in range(2): # '_' used to replace anything any variables like 'i'
+        row, col = get_random_pos(tiles)  # get_random_pos used to get any row and column that didn't already exists
+        tiles[f"{row}{col}"] = Tile(2, row, col)
+    return tiles
 
 def main(window):
     clock = pygame.time.Clock()
     run = True
-    tiles = {"00": Tile(4, 0, 0), "20": Tile(128, 2, 0)}
+    tiles = {"00": Tile(4, 0, 0), "20": Tile(128, 2, 0), "02" :Tile(64, 0, 2)}
     while run:
         clock.tick(FPS)
         
@@ -105,7 +123,7 @@ def main(window):
                 run = False
                 break
         
-        draw(window)
+        draw(window, tiles)
     
     pygame.quit()
     
